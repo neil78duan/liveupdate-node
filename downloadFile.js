@@ -35,8 +35,8 @@ function writeBuffer2client(res,buf, displayFileName,fileExt,verID,md5text)
 		"Content-Type":fileExt,
 		"Content-Length":Buffer.byteLength(buf,'binary'),
         "Server": "NodeJs(" + process.version + ")",
-        "attachment;filename": displayFileName,
-		"packageversion" : verID
+        "attachment;filename": '\"' + displayFileName + '\"',
+		'packageversion' : verID
 	}
 	if(md5text && md5text.length > 0) {
 		opts.MD5 = md5text ;
