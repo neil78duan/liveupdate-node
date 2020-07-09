@@ -35,7 +35,7 @@ function configHeader(Config, resp) {
 }
 
 
-function beginDownload(filePath, req, resp, down) {
+function beginDownload(filename,filePath, req, resp, down) {
 
     var config = {};
 
@@ -53,6 +53,7 @@ function beginDownload(filePath, req, resp, down) {
             resp.writeHead(200, {
                 "Content-Type": getFileType(filePath),
                 "Content-Length": config.fileSize,
+                "attachment;filename" : filename,
                 "Server": "NodeJs(" + process.version + ")"
             });
         }
@@ -65,11 +66,11 @@ function beginDownload(filePath, req, resp, down) {
 }
 
 
-function Download(filePath, resp, req) {
+function Download(filename, filePath, resp, req) {
 
     fs.exists(filePath, function (exist) {
         if (exist) {
-            beginDownload(filePath, req, resp, function (config) {
+            beginDownload(filename, filePath, req, resp, function (config) {
                 fReadStream = fs.createReadStream(filePath, {
                     encoding: 'binary',
                     bufferSize: 1024 * 128,

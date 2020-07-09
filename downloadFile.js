@@ -24,16 +24,18 @@ var verFileGlobal = "/version.txt" ;
 var dataFileGlobal = "/data.zip" ;
 var __uploadLog = "/upload.log";
 var __dataList = "/datalist.txt";
+var __dataListFileName = "datalist.txt";
 
 
 
-function writeBuffer2client(res,buf, fileExt,verID,md5text)
+function writeBuffer2client(res,buf, displayFileName,fileExt,verID,md5text)
 {
 
 	var opts = {
 		"Content-Type":fileExt,
 		"Content-Length":Buffer.byteLength(buf,'binary'),
-		"Server":"NodeJs("+process.version+")" ,
+        "Server": "NodeJs(" + process.version + ")",
+        "attachment;filename": displayFileName,
 		"packageversion" : verID
 	}
 	if(md5text && md5text.length > 0) {
@@ -46,7 +48,7 @@ function writeBuffer2client(res,buf, fileExt,verID,md5text)
 }
 
 
-function downTextFile(filePath, response, dataID)
+function downTextFile(fileName,filePath, response, dataID)
 {
 
 	try {
@@ -56,7 +58,7 @@ function downTextFile(filePath, response, dataID)
 				sheldonLog.error("downloadFile::downTextFile() open file error ", filePath, "error =", err) ;
 			}
 			else {
-				writeBuffer2client(response,file, resumable.getFileType(verFileGlobal),dataID,null) ;
+                writeBuffer2client(response, file, fileName, resumable.getFileType(verFileGlobal),dataID,null) ;
 			}
 		});
 	}
@@ -80,7 +82,7 @@ exports.DownLoadData = function (response , request)
 		var name = dataJson.name ;
 		
 		var filePath = config_info.liveUpdateDir + '/' + dataID + '/' + name;
-		resumable.resumableDownload(filePath,response , request ) ;
+		resumable.resumableDownload(name,filePath,response , request ) ;
 		
     }
 	
@@ -97,7 +99,7 @@ exports.DownLoadList = function (response , request)
 {
 	sheldonLog.debug("call DownLoadList() "  ) ;
 	
-	return downTextFile(config_info.liveUpdateDir +  __dataList, response, '0');
+    return downTextFile(__dataListFileName,config_info.liveUpdateDir +  __dataList, response, '0');
 	
 	
 }
