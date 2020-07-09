@@ -5,7 +5,7 @@
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin/
 WORKING=/home/liveupdate/liveupdate-node
 
-CONFIG_FILE=$WORKING/configuration.json
+CONFIG_FILE=$WORKING/release_cfg.json
 
 DAEMON=$WORKING/index.js
 PIDFILE=/var/run/liveupdate.pid
