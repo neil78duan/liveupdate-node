@@ -53,7 +53,7 @@ function beginDownload(filename,filePath, req, resp, down) {
             resp.writeHead(200, {
                 "Content-Type": getFileType(filePath),
                 "Content-Length": config.fileSize,
-                "attachment;filename": '\"' + filename + '\"',
+                //"attachment;filename":  filename,
                 "Server": "NodeJs(" + process.version + ")"
             });
         }
