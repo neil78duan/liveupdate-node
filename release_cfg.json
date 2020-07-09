@@ -22,7 +22,7 @@
       "appenders": [
         {
           "type": "file",
-          "filename": "./log/sheldon.log",
+          "filename": "/var/log/liveupdate.log",
           "maxLogSize": "1048576",
           "backups": "10"
         }
