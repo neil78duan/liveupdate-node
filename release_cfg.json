@@ -1,10 +1,10 @@
 {
-  "port": 1080,
-  "liveUpdateDir": "./uploadversion",
+  "port": 8008,
+  "liveUpdateDir": "home/liveupdate/upload",
 
-  "openGMTool": "yes",
+  "openGMTool": "no",
   "gmtoolport": 8080,
-  "gm_reliable_ip": [ "127.0.0.1", "0.0.0.0" ],
+  "gm_reliable_ip": [ "0.0.0.0" ],
   "my_domain_name": "http://localhost",
 
   "downloadCfg": {
@@ -16,13 +16,13 @@
   "logger": {
     "desc": " enable yes/no, logtype log4/console/all , loglevel is debug, common ,warn, error ,fatal",
     "enable": "yes",
-    "logtype": "all",
-    "loglevel": "debug",
+    "logtype": "log4",
+    "loglevel": "error",
     "log4_config": {
       "appenders": [
         {
           "type": "file",
-          "filename": "./log/liveupdate.log",
+          "filename": "./log/sheldon.log",
           "maxLogSize": "1048576",
           "backups": "10"
         }
