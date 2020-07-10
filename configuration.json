@@ -1,6 +1,6 @@
 {
   "port": 1080,
-  "liveUpdateDir": "./uploadversion",
+  "liveUpdateDir": "../upload",
 
   "openGMTool": "yes",
   "gmtoolport": 8080,
@@ -22,7 +22,7 @@
       "appenders": [
         {
           "type": "file",
-          "filename": "./log/liveupdate.log",
+          "filename": "../log/liveupdate.log",
           "maxLogSize": "1048576",
           "backups": "10"
         }

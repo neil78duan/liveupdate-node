@@ -62,46 +62,36 @@ function trim_verID(strInput){ //过滤字符中的全部空格
 }
 
 
-function saveFiles(response,FileVersion, FileData,FileMd5, desc, md5Json) {
+function saveFiles(response,verID, FileData, desc, fileMd5Text) {
 	
 	sheldonLog.log("enter saveFile() ") ;
 	try {
 		
 		
-		if(md5Json && !checkUploadMd5(md5Json,FileData) ) {
+        if (fileMd5Text && !checkUploadMd5(fileMd5Text,FileData) ) {
 			sheldon.ResponeError(response,200, '<a href="/">Home</a><br /><br />Upload file ERROR MD5 check error ' ) ;
 			return true ;
 		}
 		
-		var verFile = FileVersion.path ;
 		var dataFile = FileData.path ;
 		
-		//sheldonLog.log("get upload file ", verFile, dataFile);
-		
-		var verID = fs.readFileSync(verFile, "utf8");
 		verID = trim_verID(verID) ;
 		
 		var aimDir = config_info.liveUpdateDir + '/' + verID;
+        var dataPath = aimDir + "/" + FileData.name;
+        
+        if (!fs.existsSync(aimDir)) {
+            fs.mkdirSync(aimDir);
+            sheldonLog.log("create path : ", aimDir);
+        }
+        else if (!fs.existsSync(dataPath)) {
+            sheldon.ResponeError(response, 200, '<a href="/">Home</a><br /><br />Upload data file already exist ' + verID + "/" + FileData.name);
+            return false;
+        }
+
+		fs.renameSync(dataFile, dataPath ) ;		
 		
-		if(fs.existsSync(aimDir)) {
-			sheldon.ResponeError(response,200, '<a href="/">Home</a><br /><br />Upload version already exist ' + verID) ;
-			return true ;
-		}
-		
-		fs.mkdirSync(aimDir);
-		sheldonLog.debug("upload file to ", aimDir);
-		
-		var dataPath = aimDir + "/" + FileData.name;
-		
-		fs.renameSync(verFile, aimDir+verFileGlobal ) ;
-		fs.renameSync(dataFile, dataPath ) ;
-		
-		if (FileMd5 && FileMd5.size > 0 ) {
-			fs.renameSync(FileMd5.path, aimDir + "/md5file.txt" ) ;
-			//console.log(" md5 file :" ,FileMd5) ;
-		}
-		
-		if(fs.existsSync(aimDir+verFileGlobal) && fs.existsSync(dataPath) ) {
+		if(fs.existsSync(dataPath) ) {
 			
 			sheldonLog.info("upload version file success version-id = ", verID);
 			
@@ -136,7 +126,7 @@ function saveFiles(response,FileVersion, FileData,FileMd5, desc, md5Json) {
 	}
 	return false ;
 }
-
+/*
 function getMd5Info(inputMd5InfoFile, inputDataFile)
 {
 	var ret = {} ;
@@ -171,6 +161,7 @@ function getMd5Info(inputMd5InfoFile, inputDataFile)
 	//console.log("file md5 text= ", ret) ;
 	return ret ;
 }
+*/
 
 exports.UploadVersionHandle = function (response, request) {
 	
@@ -194,19 +185,16 @@ exports.UploadVersionHandle = function (response, request) {
 		
 		//console.log("about to parse");
 		form.parse(request, function(error, formData, files) {
-				   //console.log("parse notice data done", files);
+
+            //console.log("parse notice data done", files);
 		   if(error ) {
 				sheldonLog.error("add UploadVersionHandle error", error) ;
 				
 		   }
 
-		   else if(files && files.VersionFile && files.VersionFile.size > 0 && files.DataFile && files.DataFile.size > 0) {
+		   else if(files &&  files.DataFile && files.DataFile.size > 0) {
 		   
-		   		var md5Json = {} ;
-		   		if(files.Md5Info.size > 0 ){
-		   			md5Json = getMd5Info(files.Md5Info, files.DataFile);
-		   		}
-		   		bsuccess = saveFiles(response,files.VersionFile ,files.DataFile,files.Md5Info, formData.VerDesc, md5Json) ;
+               bsuccess = saveFiles(response, formData.VerID, files.DataFile,  formData.VerDesc, formData.md5Val);
 		   }
 		   if( bsuccess == false) {
 		   		sheldon.ResponeError(response,400, "parse data error");
@@ -263,22 +251,16 @@ exports.requestUploadVersion = function (response)
 	
 	'<form action="/uploadversion" method="post" enctype="multipart/form-data"> '+
 	
-	'Version File :' +
-	'<input type="file" name="VersionFile" multiple="multiple">'+
 	
 	'Data File :' +
 	'<input type="file" name="DataFile" multiple="multiple">'+
 	'<br />' +
+
+     'Version: <input type="text" name="VerID" /><br />' +
+
+     'MD5: <input type="text" name="md5Val" /><br />' +
 	
-	
-	'Md5-Info File :' +
-	'<input type="file" name="Md5Info" multiple="multiple">'+
-	'<br />' +
-	
-	'Description: ' +
-	'<input type="text" name="VerDesc" />' +
-	'<br />' +
-	
+	'Description: <input type="text" name="VerDesc" /><br />' +
 	
 	'<input type="submit" value="Submit" />' +
 	'</form>'+

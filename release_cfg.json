@@ -2,7 +2,7 @@
   "port": 8008,
   "liveUpdateDir": "/home/liveupdate/upload",
 
-  "openGMTool": "no",
+  "openGMTool": "yes",
   "gmtoolport": 8080,
   "gm_reliable_ip": [ "0.0.0.0" ],
   "my_domain_name": "http://localhost",
