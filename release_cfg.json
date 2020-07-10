@@ -1,6 +1,6 @@
 {
   "port": 8008,
-  "liveUpdateDir": "/home/liveupdate/upload",
+  "liveUpdateDir": "$parentDir/$myuploadPath",
 
   "openGMTool": "yes",
   "gmtoolport": 8080,
@@ -19,14 +19,10 @@
     "logtype": "log4",
     "loglevel": "error",
     "log4_config": {
-      "appenders": [
-        {
-          "type": "file",
-          "filename": "/var/log/liveupdate.log",
-          "maxLogSize": "1048576",
-          "backups": "10"
-        }
-      ]
+	
+		"appenders": { "cheese": { "type": "file", "filename": "../log/liveupdate.log" } },
+		"categories": { "default": { "appenders": ["cheese"], "level": "error" } }
+		
     }
 
   }

@@ -104,11 +104,11 @@ function saveFiles(response,verID, FileData, desc, fileMd5Text) {
 			sheldon.ResponeError(response,200,  backTip) ;
 			
 			//write log
-			fs.appendFile(config_info.liveUpdateDir  + __uploadLog,
+			fs.appendFileSync(config_info.liveUpdateDir  + __uploadLog,
 				'\n<br />' + verID + ' : ' + downUrl) ;
 			
 			// write file list
-			fs.appendFile(config_info.liveUpdateDir +  __dataList,
+			fs.appendFileSync(config_info.liveUpdateDir +  __dataList,
 				verID + ' : ' + FileData.name + '\n') ;
 			
 			

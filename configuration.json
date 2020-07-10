@@ -19,14 +19,8 @@
     "logtype": "all",
     "loglevel": "debug",
     "log4_config": {
-      "appenders": [
-        {
-          "type": "file",
-          "filename": "../log/liveupdate.log",
-          "maxLogSize": "1048576",
-          "backups": "10"
-        }
-      ]
+		"appenders": { "cheese": { "type": "file", "filename": "../log/liveupdate.log" } },
+		"categories": { "default": { "appenders": ["cheese"], "level": "error" } }
     }
 
   }
