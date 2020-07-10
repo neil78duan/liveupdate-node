@@ -90,18 +90,7 @@ function showVersion(res)
         '<br /> Process memory usage : ' + util.inspect(process.memoryUsage()) ;
 		
 		sheldon.ResponeError(res,200, '<a href="/">Home</a><br /><br />' + 'unknow version' +  versionExt);
-		/*
-        var fs = require("fs");
-		fs.readFile("./VERSION.txt",'utf8',function(err,file){
-                    if(err) {
-					
-                    }
-                    else {
-                    sheldon.ResponeError(res,200, '<a href="/">Home</a><br /><br />'+ file + versionExt );
-					
-                    }
-                    });
-		*/
+		
     }
     catch (e) {
         sheldon.ResponeError(res,200, 'unknow version' + versionExt);
@@ -114,24 +103,25 @@ function showVersion(res)
 function requestShowUploadLogs(response)
 {
     liveupdate.getUploadLog( function (logText) {
-                            
-                            var body = '<html>'+
-                            '<head>'+
-                            '<meta http-equiv="Content-Type" '+
-                            'content="text/html; charset=UTF-8" />'+
-                            '</head>'+
-                            '<body>'+
-                            '<a href="/">Home</a><br />' +
-                            logText +
-                            '</body>'+
-                            '</html>';
-                            
-                            response.writeHead(200, {"Content-Type": "text/html"});
-                            response.write(body);
-                            response.end();
 
-                            
-                            }) ;
+        var body = '<html>' +
+            '<head>' +
+            '<meta http-equiv="Content-Type" ' +
+            'content="text/html; charset=UTF-8" />' +
+            '</head>' +
+            '<body>' +
+            '<a href="/">Home</a><br />' +
+            logText +
+            '</body>' +
+            '</html>';
+
+        response.writeHead(200, { "Content-Type": "text/html" });
+        response.write(body);
+        response.end();
+
+
+    });
+
     }
 
 
