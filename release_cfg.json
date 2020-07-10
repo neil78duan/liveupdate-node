@@ -1,6 +1,6 @@
 {
   "port": 8008,
-  "liveUpdateDir": "/home/liveupdate/upload",
+  "liveUpdateDir": "$parentDir/$myuploadPath",
 
   "openGMTool": "yes",
   "gmtoolport": 8080,
