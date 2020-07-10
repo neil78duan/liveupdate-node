@@ -22,5 +22,10 @@ sed 's;/home/liveupdate/upload;$parentDir/$myuploadPath;g' ./release_cfg.json > 
 rm ./release_cfg.json
 mv ./.rel_cfg.tmp ./release_cfg.json
 
+#npm install b64url
+#npm install formidable
+#npm install lodash
+#npm install log4js
+
 echo "Install success!"
 
