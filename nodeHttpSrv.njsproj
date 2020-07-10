@@ -41,12 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="configuration.json" />
+    <Content Include="install.sh" />
     <Content Include="liveupdate" />
-    <Content Include="publish-release.sh" />
-    <Content Include="publish.sh" />
     <Content Include="readme.txt" />
     <Content Include="release_cfg.json" />
-    <Content Include="run_insrv.sh" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
