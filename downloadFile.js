@@ -21,7 +21,7 @@ var sheldonLog = require('./sheldonLog') ;
 var resumable = require('./resumable') ;
 
 var verFileGlobal = "/version.txt" ;
-var dataFileGlobal = "/data.zip" ;
+//var dataFileGlobal = "/data.zip" ;
 var __uploadLog = "/upload.log";
 var __dataList = "/datalist.txt";
 var __dataListFileName = "datalist.txt";

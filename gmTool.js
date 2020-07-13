@@ -16,6 +16,8 @@ var sheldonLog = require('./sheldonLog') ;
 
 var liveupdate = require('./upload.js');
 
+var serverList = require('./serverListMgr');
+
 
 var RETURNSUCCESS = 200 ;
 
@@ -136,13 +138,16 @@ get_handle["/liveupdate"] = liveupdate.requestUploadVersion;
 get_handle["/versioninfo"] = showVersion;
 get_handle["/uploadlog"] = requestShowUploadLogs;
 
+get_handle["/reqAddServer"] = serverList.requestAddNewServer;
+
 
 
 var post_handle = {}
+post_handle["/uploadversion"] = liveupdate.UploadVersionHandle;
+post_handle["/addNewServer"] = serverList.handleAddNewServer;
+
 
 exports.showVersion = showVersion ;
-
-
 //server entry
 exports.start = function () {
     
@@ -158,14 +163,17 @@ exports.start = function () {
         if(RETURNSUCCESS!=checkIP( request,pathname) ) {
             return ;
         }
+
+        route.request_route(post_handle, get_handle, pathname, response, request, false);
+
 		//过滤post
-		if(pathname == "/uploadversion") {
+		/*if(pathname == "/uploadversion") {
             liveupdate.UploadVersionHandle(response, request);
         
         }
         else {
             route.request_route(post_handle,get_handle, pathname, response, request,false);
-        }
+        }*/
     }
     
     http.createServer(onRequest).listen(config_info.gmtoolport);
