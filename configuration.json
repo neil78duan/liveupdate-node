@@ -19,7 +19,7 @@
     "logtype": "all",
     "loglevel": "debug",
     "log4_config": {
-		"appenders": { "cheese": { "type": "file", "filename": "../log/liveupdate.log" } },
+		"appenders": { "cheese": { "type": "file", "filename": "/var/log/liveupdate.log" } },
 		"categories": { "default": { "appenders": ["cheese"], "level": "error" } }
     }
 
