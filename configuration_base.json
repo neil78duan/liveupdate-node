@@ -1,5 +1,5 @@
 {
-  "port": 8000,
+  "port": 1080,
   "liveUpdateDir": "../upload",
 
   "openGMTool": "yes",

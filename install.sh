@@ -9,18 +9,15 @@ parentDir=`pwd`
 
 myuploadPath=upload
 
-mkdir $myuploadPath
-
+[ -d $myuploadPath ] || mkdir $myuploadPath
 
 cd $workDir
 
-sed 's;/home/liveupdate/liveupdate-node;$workDir;g' ./liveupdate > /etc/init.d/liveupdate
+sed "s;my_liveupdate_working_path;$workDir;g" ./liveupdate > /etc/init.d/liveupdate
+chmod u+x /etc/init.d/liveupdate
 
+sed "s;../upload;$parentDir/$myuploadPath;g" ./configuration_base.json | sed "s;../log/liveupdate.log;/var/log/liveupdate.log;g"  > ./config.json
 
-sed 's;/home/liveupdate/upload;$parentDir/$myuploadPath;g' ./release_cfg.json > ./.rel_cfg.tmp
-
-rm ./release_cfg.json
-mv ./.rel_cfg.tmp ./release_cfg.json
 
 #npm install b64url
 #npm install formidable
