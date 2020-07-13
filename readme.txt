@@ -22,6 +22,9 @@ http://localhost/loaddata?dataver=1.1.1&name=data.zip
 获取每个版本对应的文件名 （下载txt文件）
 http://hostname/getlist
 
+获得服务器列表
+http://hostname/getserverlist
+
 所有地址使用get 方法
 
 版本数据的生产：

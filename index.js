@@ -126,8 +126,12 @@ sheldonGet_handle["/"] = errorHandle ;
 //start live update
 var downFile = require("./downloadFile.js");
 
+var serverList = require('./serverListMgr');
+
+
 sheldonGet_handle["/loaddata"] = downFile.DownLoadData ;
 sheldonGet_handle["/getlist"] = downFile.DownLoadList
+sheldonGet_handle["/getserverlist"] = serverList.getServerList;
 
 
 //start game server

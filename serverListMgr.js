@@ -13,13 +13,21 @@ var fs = require("fs");
 var url = require("url");
 //var crypto = require('crypto');
 var sheldon = require("./index");
-var config_info = sheldon.config_info;
 var sheldonLog = require('./sheldonLog');
+var downloader = require('./downloadFile');
+
 
 var __srv_list = "serverlist.json";
+var config_info = sheldon.config_info;
 
 var _srvlist_file = config_info.liveUpdateDir + '/' + __srv_list;
 
+
+exports.getServerList = function (response, request) {
+
+    return downloader.downTextFile(_srvlist_file, response);
+
+}
 
 exports.handleAddNewServer = function (response, request, dataJson) {
     try {

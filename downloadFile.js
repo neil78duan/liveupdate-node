@@ -28,15 +28,13 @@ var __dataListFileName = "datalist.txt";
 
 
 
-function writeBuffer2client(res,buf, displayFileName,fileExt,verID,md5text)
+function writeBuffer2client(res,buf, fileExt,md5text)
 {
 
 	var opts = {
 		"Content-Type":fileExt,
 		"Content-Length":Buffer.byteLength(buf,'binary'),
-        "Server": "NodeJs(" + process.version + ")",
-        //"attachment;filename": '\"' + displayFileName + '\"',
-		'packageversion' : verID
+        "Server": "NodeJs(" + process.version + ")"
 	}
 	if(md5text && md5text.length > 0) {
 		opts.MD5 = md5text ;
@@ -48,7 +46,7 @@ function writeBuffer2client(res,buf, displayFileName,fileExt,verID,md5text)
 }
 
 
-function downTextFile(fileName,filePath, response, dataID)
+function downTextFile(filePath, response)
 {
 
 	try {
@@ -58,7 +56,7 @@ function downTextFile(fileName,filePath, response, dataID)
 				sheldonLog.error("downloadFile::downTextFile() open file error ", filePath, "error =", err) ;
 			}
 			else {
-                writeBuffer2client(response, file, fileName, resumable.getFileType(verFileGlobal),dataID,null) ;
+                writeBuffer2client(response, file, resumable.getFileType(filePath),null) ;
 			}
 		});
 	}
@@ -100,7 +98,7 @@ exports.DownLoadList = function (response , request)
 {
 	sheldonLog.debug("call DownLoadList() "  ) ;
 	
-    return downTextFile(__dataListFileName,config_info.liveUpdateDir +  __dataList, response, '0');
+    return downTextFile(config_info.liveUpdateDir +  __dataList, response);
 	
 	
 }
