@@ -36,6 +36,7 @@
     <Compile Include="index.js" />
     <Compile Include="resumable.js" />
     <Compile Include="route.js" />
+    <Compile Include="serverListMgr.js" />
     <Compile Include="sheldonLog.js" />
     <Compile Include="upload.js" />
   </ItemGroup>
