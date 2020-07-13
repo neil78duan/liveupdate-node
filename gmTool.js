@@ -58,9 +58,14 @@ function startPage(response)
     
     '<a href="/uploadlog">View Upload logs</a>' +
     '<br />' +
-	
-	//'<a href="/listuserid">Show UserId list</a>' +
-	//'<br />' +
+
+    '<a href="/reqviewserverlist">View Server List</a>' +
+    '<br />' +
+
+        
+
+	'<a href="/reqaddserver">AddNewServer</a>' +
+	'<br />' +
 	
 	
     '<a href="/versioninfo">Server Version Info</a>' +
@@ -138,13 +143,15 @@ get_handle["/liveupdate"] = liveupdate.requestUploadVersion;
 get_handle["/versioninfo"] = showVersion;
 get_handle["/uploadlog"] = requestShowUploadLogs;
 
-get_handle["/reqAddServer"] = serverList.requestAddNewServer;
+get_handle["/reqaddserver"] = serverList.requestAddNewServer;
+get_handle["/reqviewserverlist"] = serverList.requestViewServerList;
+get_handle["/delserverfromlist"] = serverList.handleDelServer
 
 
 
 var post_handle = {}
-post_handle["/uploadversion"] = liveupdate.UploadVersionHandle;
-post_handle["/addNewServer"] = serverList.handleAddNewServer;
+//post_handle["/uploadversion"] = liveupdate.UploadVersionHandle;
+post_handle["/addnewserver"] = serverList.handleAddNewServer;
 
 
 exports.showVersion = showVersion ;
@@ -164,16 +171,16 @@ exports.start = function () {
             return ;
         }
 
-        route.request_route(post_handle, get_handle, pathname, response, request, false);
+        //route.request_route(post_handle, get_handle, pathname, response, request, false);
 
 		//过滤post
-		/*if(pathname == "/uploadversion") {
+		if(pathname == "/uploadversion") {
             liveupdate.UploadVersionHandle(response, request);
         
         }
         else {
-            route.request_route(post_handle,get_handle, pathname, response, request,false);
-        }*/
+            route.request_route(post_handle,get_handle, pathname, response, request);
+        }
     }
     
     http.createServer(onRequest).listen(config_info.gmtoolport);

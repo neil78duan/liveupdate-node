@@ -17,13 +17,13 @@ var fs = require('fs');
 
 
 //request route
-function request_route(post_handle,get_handle, inPath, response, request,bIsJasonData) {
+function request_route(post_handle,get_handle, inPath, response, request) {
 	
 	try {
 		var pathname = inPath.toLowerCase() ;
 		
 		if(request.method == 'POST') {
-			post_entry(post_handle, pathname,response, request,bIsJasonData);
+			post_entry(post_handle, pathname,response, request);
 		}
 		else if (request.method == 'OPTIONS') {
 			var headers = {};
@@ -60,7 +60,7 @@ function get_entry(handle, pathname,response, request)
 	}
 }
 
-function post_entry(handle, pathname,response, request,bIsJasonData)
+function post_entry(handle, pathname,response, request)
 {
     
     var queryData = "";
@@ -69,26 +69,31 @@ function post_entry(handle, pathname,response, request,bIsJasonData)
                });
     
     request.on('end',function() {
-               parseRoutePost(queryData, handle, pathname,response, request,bIsJasonData) ;
+               parseRoutePost(queryData, handle, pathname,response, request) ;
                });
     
 }
-function parseRoutePost(queryData, handle, pathname,response, request, bIsJasonData)
+function parseRoutePost(queryData, handle, pathname,response, request)
 {
     var ret = 404 ;
-    //console.log("queryData type =" , typeof queryData ) ;
+    //console.log("queryData type =", typeof queryData, "content type =", request.headers["content-type"]);
+    //console.log("queryData =", queryData);
     try
-	{
-        var data1={} ;
-        if(queryData.length > 0) {
+    {
+        let type = request.headers["content-type"];
 
-            if(bIsJasonData) {
-                data1 = JSON.parse(queryData) ; //parse text from json text
-            }
-            else {
-                data1 = qs.parse(queryData) ;  //parse text from form.
-            }
+        var data1 = {};
 
+        if (queryData.length > 0) {
+            if (type === "application/x-www-form-urlencoded" ) {
+                data1 = qs.parse(queryData);
+            } else if (type === "application/json") {
+                data1 = JSON.parse(queryData);
+            }
+            //else {
+            //    sheldonLog.error("unknow data");
+            //}
+            
         }
 		
 		if (typeof handle[pathname] === 'function' ) {
@@ -116,11 +121,11 @@ function parseRoutePost(queryData, handle, pathname,response, request, bIsJasonD
 }
 
 //server entry
-exports.routeStart = function (port,post_handle, get_handle,bIsJasonData, bHttps) {
+exports.routeStart = function (port,post_handle, get_handle, bHttps) {
     
     function onRequest(request, response) {
         var pathname = url.parse(request.url).pathname;
-        request_route(post_handle,get_handle, pathname, response, request,bIsJasonData);
+        request_route(post_handle,get_handle, pathname, response, request);
     }
 	
 	if(bHttps && bHttps==true) {

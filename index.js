@@ -112,7 +112,7 @@ exports.ResponeClient =function (response, body)
 exports.ResponeError=function (response, errorCode, errorText)
 {
 	
-	response.writeHead(errorCode, {"Content-Type": "text/html"});
+    response.writeHead(errorCode, { "Content-Type": "text/html; charset=utf-8"});
 	response.write(errorText);
 	response.end();
 }

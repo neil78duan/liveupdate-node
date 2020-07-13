@@ -7,13 +7,13 @@
  */
 
 
-var http = require("http");
-var path=require("path");
+//var http = require("http");
+//var path=require("path");
 var url = require("url");
-var qs = require("querystring");
+//var qs = require("querystring");
 
 var fs=require("fs");
-var crypto = require('crypto') ;
+//var crypto = require('crypto') ;
 var sheldon = require("./index");
 var config_info = sheldon.config_info;
 var sheldonLog = require('./sheldonLog') ;
@@ -22,7 +22,7 @@ var resumable = require('./resumable') ;
 
 var verFileGlobal = "/version.txt" ;
 //var dataFileGlobal = "/data.zip" ;
-var __uploadLog = "/upload.log";
+//var __uploadLog = "/upload.log";
 var __dataList = "/datalist.txt";
 var __dataListFileName = "datalist.txt";
 
@@ -105,7 +105,7 @@ exports.DownLoadList = function (response , request)
 	
 }
 
-
+exports.downTextFile = downTextFile;
 
 
 
