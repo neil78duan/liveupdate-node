@@ -159,9 +159,9 @@ exports.requestAddNewServer = function (response) {
 
         'serverID: <input type="text" name="serverID" /><br />' +
 
-        'serverName: <input type="text" name="serverName" /><br />' +
+        'Name: <input type="text" name="serverName" /><br />' +
 
-        'hostName: <input type="text" name="Addr" /><br />' +
+        'Address: <input type="text" name="Addr" /><br />' +
 
         'Port: <input type="text" name="Port" /><br />' +
 

@@ -19,7 +19,7 @@ http://hostname/loaddata -> 下载版本数据
 http://localhost/loaddata?dataver=1.1.1&name=data.zip
 版本1.1.1 上传的文件名是data.zip
 
-获取每个版本对应的文件名 （下载txt文件）
+获取每个版本对应的文件名列表 （下载txt文件）
 http://hostname/getlist
 
 获得服务器列表
@@ -27,12 +27,9 @@ http://hostname/getserverlist
 
 所有地址使用get 方法
 
-版本数据的生产：
-	使用恰当的客户端生产一个zip压缩包，然后放到指定版本的目录。比如 目录 1.1.2
-之后使用 create_md5.sh工具生成版本的md5数据（把目录1.1.2和 create_md5.sh 放在同一个目录中）
-然后登陆
-http://localhost:8080/liveupdate
-上传即可
+
+http://localhost:8080/ 进入后台管理
+上传即可版本文件和其他的后台管理功能
 
 
 生成md5和版本信息
