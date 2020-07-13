@@ -1,6 +1,6 @@
 {
   "port": 1080,
-  "liveUpdateDir": "myupdate_path",
+  "liveUpdateDir": "../upload",
 
   "openGMTool": "yes",
   "gmtoolport": 8080,
@@ -19,7 +19,7 @@
     "logtype": "all",
     "loglevel": "debug",
     "log4_config": {
-		"appenders": { "cheese": { "type": "file", "filename": "/var/log/liveupdate.log" } },
+		"appenders": { "cheese": { "type": "file", "filename": "../log/liveupdate.log" } },
 		"categories": { "default": { "appenders": ["cheese"], "level": "error" } }
     }
 

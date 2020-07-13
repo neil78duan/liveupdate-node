@@ -73,6 +73,7 @@ function downTextFile(fileName,filePath, response, dataID)
 
 exports.DownLoadData = function (response , request)
 {
+        sheldonLog.debug("getVersionData() begin") ;
 	try
 	{
 		var dataJson = url.parse(request.url, true).query;

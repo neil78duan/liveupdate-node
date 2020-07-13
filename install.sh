@@ -9,15 +9,14 @@ parentDir=`pwd`
 
 myuploadPath=upload
 
-mkdir $myuploadPath
-
+[ -d $myuploadPath ] || mkdir $myuploadPath
 
 cd $workDir
 
 sed "s;my_liveupdate_working_path;$workDir;g" ./liveupdate > /etc/init.d/liveupdate
+chmod u+x /etc/init.d/liveupdate
 
-
-sed "s;myupdate_path;$parentDir/$myuploadPath;g" ./configuration_base.json > ./config.json
+sed "s;../upload;$parentDir/$myuploadPath;g" ./configuration_base.json | sed "s;../log/liveupdate.log;/var/log/liveupdate.log;g"  > ./config.json
 
 
 #npm install b64url

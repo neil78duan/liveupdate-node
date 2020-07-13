@@ -67,7 +67,7 @@ function parseArgs()
         //console.log("load file ", configFileName) ;
     }
     else {
-        config_info = require('./config.json');
+        config_info = require('./configuration_base.json');
     }
     
     //console.log("working dir = ", workingDir, "config file =",configFileName) ;
