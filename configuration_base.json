@@ -1,6 +1,6 @@
 {
   "port": 1080,
-  "liveUpdateDir": "../upload",
+  "liveUpdateDir": "myupdate_path",
 
   "openGMTool": "yes",
   "gmtoolport": 8080,

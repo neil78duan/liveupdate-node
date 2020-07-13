@@ -7,8 +7,8 @@
 . /etc/rc.d/init.d/functions
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin/
-WORKING=/home/liveupdate/liveupdate-node
-CONFIG_FILE=$WORKING/release_cfg.json
+WORKING=my_liveupdate_working_path
+CONFIG_FILE=$WORKING/config.json
 
 EXEC=$WORKING/index.js
 PIDFILE=/var/run/liveupdate.pid

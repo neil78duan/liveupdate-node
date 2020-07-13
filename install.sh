@@ -14,13 +14,11 @@ mkdir $myuploadPath
 
 cd $workDir
 
-sed 's;/home/liveupdate/liveupdate-node;$workDir;g' ./liveupdate > /etc/init.d/liveupdate
+sed "s;my_liveupdate_working_path;$workDir;g" ./liveupdate > /etc/init.d/liveupdate
 
 
-sed 's;/home/liveupdate/upload;$parentDir/$myuploadPath;g' ./release_cfg.json > ./.rel_cfg.tmp
+sed "s;myupdate_path;$parentDir/$myuploadPath;g" ./configuration_base.json > ./config.json
 
-rm ./release_cfg.json
-mv ./.rel_cfg.tmp ./release_cfg.json
 
 #npm install b64url
 #npm install formidable
