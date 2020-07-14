@@ -35,7 +35,7 @@ function configHeader(Config, resp) {
 }
 
 
-function beginDownload(filename,filePath, req, resp, down) {
+function beginDownload(filePath, req, resp, down) {
 
     var config = {};
 
@@ -45,15 +45,17 @@ function beginDownload(filename,filePath, req, resp, down) {
 
         config.fileSize = state.size;
 
+        var filename = path.basename(filePath);
 
         sheldonLog.debug("download file header.range = ", req.headers.range);
 
         config.startPos = getStartPos(req.headers.range);
         if (0 == config.startPos) {
             resp.writeHead(200, {
-                "Content-Type": getFileType(filePath),
+                "Content-Type": getFileType(filename),
                 "Content-Length": config.fileSize,
-                //"attachment;filename":  filename,
+                "content-disposition": "attachment;filename=" + filename,
+
                 "Server": "NodeJs(" + process.version + ")"
             });
         }
@@ -66,11 +68,11 @@ function beginDownload(filename,filePath, req, resp, down) {
 }
 
 
-function Download(filename, filePath, resp, req) {
+function Download( filePath, resp, req) {
 
     fs.exists(filePath, function (exist) {
         if (exist) {
-            beginDownload(filename, filePath, req, resp, function (config) {
+            beginDownload( filePath, req, resp, function (config) {
                 fReadStream = fs.createReadStream(filePath, {
                     encoding: 'binary',
                     bufferSize: 1024 * 128,
@@ -331,11 +333,11 @@ var fileTypeList = { ".3gp"   : "video/3gpp"
           } ;
 
 
-var path=require("path");
+
 function getFileType( fileName )
 {
 	var extName = path.extname(fileName).toLowerCase();
-    return fileTypeList.extName || "application/octet-stream";
+    return fileTypeList[extName] || "application/octet-stream";
 }
 
 exports.getFileType = getFileType;

@@ -6,21 +6,15 @@
  * 2020-7-13
  */
 
-
-//var http = require("http");
-//var path = require("path");
 var fs = require("fs");
 var url = require("url");
-//var crypto = require('crypto');
 var sheldon = require("./index");
 var sheldonLog = require('./sheldonLog');
 var downloader = require('./downloadFile');
 
-
-var __srv_list = "serverlist.json";
 var config_info = sheldon.config_info;
 
-var _srvlist_file = config_info.liveUpdateDir + '/' + __srv_list;
+var _srvlist_file = config_info.liveUpdateDir + "/serverlist.json";
 
 
 exports.getServerList = function (response, request) {
