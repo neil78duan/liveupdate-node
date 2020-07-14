@@ -8,18 +8,11 @@
  */
 
 
-//var http = require("http");
-//var path=require("path");
 var fs=require("fs");
 var crypto = require('crypto') ;
 var sheldon = require("./index");
 var config_info = sheldon.config_info;
 var sheldonLog = require('./sheldonLog') ;
-
-//var resumable = require('./resumable') ;
-
-//var verFileGlobal = "/version.txt" ;
-//var dataFileGlobal = "/data.zip" ;
 var __uploadLog = "/upload.log";
 var __dataList = "/datalist.txt";
 
