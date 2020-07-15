@@ -107,10 +107,16 @@ exports.getDataFileMd5 = function (response, request) {
         var name = dataJson.name;
 
         var filePath = config_info.liveUpdateDir + '/' + dataID + '/' + name;
+        var md5File = filePath + '.md5.txt';
 
-        var Md5Text = upload.getMd5FromFile(filePath);
+        var Md5Text = '';
 
-        //var Md5Text = fs.readFileSync(filePath + '.md5.txt', "ascii");
+        if (fs.existsSync(md5File)) {
+            Md5Text = fs.readFileSync(md5File, "ascii");
+        }
+        else {
+            Md5Text = upload.getMd5FromFile(filePath);
+        }
 
         if (typeof Md5Text == 'undefined') {
             sheldon.ResponeError(response, 404, "Not found");
@@ -122,7 +128,7 @@ exports.getDataFileMd5 = function (response, request) {
 
     catch (e) {
         sheldonLog.log("getDataFileMd5() catch exception ", e);
-        sheldon.ResponeError(response, 404, "Not found");
+        sheldon.ResponeError(response, 404, "File not found");
     }
 
     return 200;

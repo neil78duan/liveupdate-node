@@ -4,8 +4,8 @@
 
   "openGMTool": "yes",
   "gmtoolport": 8080,
-  "gm_reliable_ip": [ "127.0.0.1", "0.0.0.0" ],
-  "my_domain_name": "http://localhost",
+  "gm_reliable_ip": [ "127.0.0.1", "::ffff:192.168.31.3" ],
+  "my_domain_name": "http://192.168.31.4",
 
   "downloadCfg": {
     "desc": "about addition data download type 0 common,1 memecache ,2 fragment transfer . please do not change default",

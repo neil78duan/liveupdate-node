@@ -20,44 +20,17 @@ var __dataList = "/datalist.txt";
 function getMd5FromFile(filePath)
 {
 
-    try {
-        var buffer = fs.readFileSync(filePath);
-        var fsHash = crypto.createHash('md5');
+    var buffer = fs.readFileSync(filePath);
+    var fsHash = crypto.createHash('md5');
 
-        fsHash.update(buffer);
-        return fsHash.digest('hex');
-    }
-    catch (e) {
-        sheldonLog.error("getMd5FromFile() catch execption : ", e);
-        return '';
-    }
+    fsHash.update(buffer);
+    return fsHash.digest('hex');
 
-    /*
-	var ret = '' ;
-	try {
-		ret = crypto.createHash('md5').update(fs.readFileSync(filePath, "binary")).digest('hex');
-	}
-	catch (e) {
-		sheldonLog.error("getMd5FromFile() catch execption : ", e) ;
-		return '' ;
-	}
-	return ret ;*/
 }
 
-//exports.getMd5FromFile = getMd5FromFile
+exports.getMd5FromFile = getMd5FromFile
 
-function checkUploadMd5(md5Info, datafile)
-{
-	var md5Res = getMd5FromFile(datafile.path) ;
-	if(md5Info.DataMd5 != md5Res) {
-		sheldonLog.error("Upload " , datafile.name, " error md5 not match file-md5=", md5Res) ;
-		return false ;
-	}
-	
-	return true ;
-}
-
-function trim_verID(strInput){ //过滤字符中的全部空格
+function trim_verID(strInput) { //过滤字符中的全部空格
 	
 	var result = "";
  
@@ -75,17 +48,17 @@ function saveFiles(response,verID, FileData, desc, fileMd5Text) {
 	
 	sheldonLog.log("enter saveFile() ") ;
 	try {
-		
-        var mymd5 = fileMd5Text;
-        if (fileMd5Text && !checkUploadMd5(fileMd5Text, FileData)) {
+
+        var dataFile = FileData.path;
+
+        var mymd5 = getMd5FromFile(dataFile);
+
+        if (fileMd5Text && mymd5 != fileMd5Text) {
+            sheldonLog.error("Upload ", datafile.name, " error md5 calc-md5=", mymd5, " input-md5=", fileMd5Text);
             sheldon.ResponeError(response, 200, '<a href="/">Home</a><br /><br />Upload file ERROR MD5 check error ');
             return true;
         }
-        else {
-            mymd5 = getMd5FromFile(FileData.path);
-        }
 		
-		var dataFile = FileData.path ;
 		
 		verID = trim_verID(verID) ;
 		
@@ -96,7 +69,7 @@ function saveFiles(response,verID, FileData, desc, fileMd5Text) {
             fs.mkdirSync(aimDir);
             sheldonLog.log("create path : ", aimDir);
         }
-        else if (!fs.existsSync(dataPath)) {
+        else if (fs.existsSync(dataPath)) {
             sheldon.ResponeError(response, 200, '<a href="/">Home</a><br /><br />Upload data file already exist ' + verID + "/" + FileData.name);
             return false;
         }
@@ -121,7 +94,7 @@ function saveFiles(response,verID, FileData, desc, fileMd5Text) {
 			
 			// write file list
 			fs.appendFileSync(config_info.liveUpdateDir +  __dataList,
-                verID + ' ' + desc + ' : ' + FileData.name + '\n') ;
+                verID +  ' : ' + FileData.name + '\n') ;
 			
             //output md5 file 
             fs.writeFileSync(dataPath + ".md5.txt", mymd5);
@@ -139,42 +112,7 @@ function saveFiles(response,verID, FileData, desc, fileMd5Text) {
 	}
 	return false ;
 }
-/*
-function getMd5Info(inputMd5InfoFile, inputDataFile)
-{
-	var ret = {} ;
-	try {
-		if(inputMd5InfoFile.size==0) {
-			return NULL ;
-		}
-		
-		var Md5Text = fs.readFileSync(inputMd5InfoFile.path, "utf8");
-		var inputArrayTxt = Md5Text.split(',',10);
-		
-		
-		for(var i=0; i<inputArrayTxt.length; i++){
-			var FieldTxt = inputArrayTxt[i].split('=',2) ;
-			
-			if(FieldTxt.length == 2  ) {
-				
-				if(inputDataFile.size >0 && FieldTxt[0].indexOf(inputDataFile.name)!=-1 ) {
-					ret.DataMd5 = FieldTxt[1] ;
-				}
-			}
-			
-			
-		}
-		
-	}
-	catch (e) {
-		
-		sheldonLog.log("liveUpdate::getMd5Info() catch exception ", e) ;
-	}
-	
-	//console.log("file md5 text= ", ret) ;
-	return ret ;
-}
-*/
+
 
 exports.UploadVersionHandle = function (response, request) {
 	
@@ -210,7 +148,7 @@ exports.UploadVersionHandle = function (response, request) {
                bsuccess = saveFiles(response, formData.VerID, files.DataFile,  formData.VerDesc, formData.md5Val);
 		   }
 		   if( bsuccess == false) {
-		   		sheldon.ResponeError(response,400, "parse data error");
+		   		sheldon.ResponeError(response, 400, "parse data error");
 		   }
 
 		});
