@@ -60,11 +60,14 @@ function saveFiles(response,verID, FileData, desc, fileMd5Text) {
 	sheldonLog.log("enter saveFile() ") ;
 	try {
 		
-		
-        if (fileMd5Text && !checkUploadMd5(fileMd5Text,FileData) ) {
-			sheldon.ResponeError(response,200, '<a href="/">Home</a><br /><br />Upload file ERROR MD5 check error ' ) ;
-			return true ;
-		}
+        var mymd5 = fileMd5Text;
+        if (fileMd5Text && !checkUploadMd5(fileMd5Text, FileData)) {
+            sheldon.ResponeError(response, 200, '<a href="/">Home</a><br /><br />Upload file ERROR MD5 check error ');
+            return true;
+        }
+        else {
+            mymd5 = getMd5FromFile(FileData.path);
+        }
 		
 		var dataFile = FileData.path ;
 		
@@ -98,13 +101,14 @@ function saveFiles(response,verID, FileData, desc, fileMd5Text) {
 			
 			//write log
 			fs.appendFileSync(config_info.liveUpdateDir  + __uploadLog,
-				'\n<br />' + verID + ' : ' + downUrl) ;
+				'\n<br />' + verID + ' ' + desc + ' : ' + downUrl) ;
 			
 			// write file list
 			fs.appendFileSync(config_info.liveUpdateDir +  __dataList,
-				verID + ' : ' + FileData.name + '\n') ;
+                verID + ' ' + desc + ' : ' + FileData.name + '\n') ;
 			
-			
+            //output md5 file 
+            fs.writeFileSync(dataPath + ".md5.txt", mymd5);
 			return true ;
 		}
 		else {
@@ -163,7 +167,7 @@ exports.UploadVersionHandle = function (response, request) {
 	try
 	{
 		var bsuccess = false ;
-		var querystring = require("querystring"),
+		//var querystring = require("querystring"),
 		fs = require("fs"),
 		formidable = require("formidable");
 		

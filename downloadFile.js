@@ -75,8 +75,14 @@ exports.DownLoadData = function (response , request)
         var dataID = dataJson.dataver ;
 		var name = dataJson.name ;
 		
-		var filePath = config_info.liveUpdateDir + '/' + dataID + '/' + name;
-		resumable.resumableDownload(filePath,response , request ) ;
+        var filePath = config_info.liveUpdateDir + '/' + dataID + '/' + name;
+
+        var Md5Text = fs.readFileSync(filePath + '.md5.txt', "ascii");
+
+        if (typeof Md5Text == 'undefined') {
+            Md5Text = ' ';
+        }
+		resumable.resumableDownload(filePath,response , request,Md5Text) ;
 		
     }
 	
@@ -87,6 +93,36 @@ exports.DownLoadData = function (response , request)
 	
     return 200 ;
 	
+}
+
+exports.getDataFileMd5 = function (response, request) {
+    sheldonLog.debug("getDataFileMd5() begin");
+    try {
+        var dataJson = url.parse(request.url, true).query;
+        sheldonLog.debug("getDataFileMd5() ", JSON.stringify(dataJson));
+
+        var dataID = dataJson.dataver;
+        var name = dataJson.name;
+
+        var filePath = config_info.liveUpdateDir + '/' + dataID + '/' + name;
+
+        var Md5Text = fs.readFileSync(filePath + '.md5.txt', "ascii");
+
+        if (typeof Md5Text == 'undefined') {
+            sheldon.ResponeError(response, 404, "Not found");
+        }
+        else {
+            sheldon.ResponeError(response, 200, Md5Text);
+        }
+    }
+
+    catch (e) {
+        sheldonLog.log("getDataFileMd5() catch exception ", e);
+        sheldon.ResponeError(response, 404, "Not found");
+    }
+
+    return 200;
+
 }
 
 exports.DownLoadList = function (response , request)

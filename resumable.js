@@ -35,7 +35,7 @@ function configHeader(Config, resp) {
 }
 
 
-function beginDownload(filePath, req, resp, down) {
+function beginDownload(filePath, md5Text, req, resp, down) {
 
     var config = {};
 
@@ -55,7 +55,7 @@ function beginDownload(filePath, req, resp, down) {
                 "Content-Type": getFileType(filename),
                 "Content-Length": config.fileSize,
                 "content-disposition": "attachment;filename=" + filename,
-
+                "md5": md5Text,
                 "Server": "NodeJs(" + process.version + ")"
             });
         }
@@ -68,11 +68,11 @@ function beginDownload(filePath, req, resp, down) {
 }
 
 
-function Download( filePath, resp, req) {
+function Download( filePath, resp, req,md5Text) {
 
     fs.exists(filePath, function (exist) {
         if (exist) {
-            beginDownload( filePath, req, resp, function (config) {
+            beginDownload(filePath, md5Text, req, resp, function (config) {
                 fReadStream = fs.createReadStream(filePath, {
                     encoding: 'binary',
                     bufferSize: 1024 * 128,

@@ -129,7 +129,9 @@ var downFile = require("./downloadFile.js");
 var serverList = require('./serverListMgr');
 
 
-sheldonGet_handle["/loaddata"] = downFile.DownLoadData ;
+sheldonGet_handle["/loaddata"] = downFile.DownLoadData;
+sheldonGet_handle["/datamd5"] = downFile.getDataFileMd5;
+
 sheldonGet_handle["/getlist"] = downFile.DownLoadList
 sheldonGet_handle["/getserverlist"] = serverList.getServerList;
 
