@@ -19,6 +19,20 @@ var __dataList = "/datalist.txt";
 
 function getMd5FromFile(filePath)
 {
+
+    try {
+        var buffer = fs.readFileSync(filePath);
+        var fsHash = crypto.createHash('md5');
+
+        fsHash.update(buffer);
+        return fsHash.digest('hex');
+    }
+    catch (e) {
+        sheldonLog.error("getMd5FromFile() catch execption : ", e);
+        return '';
+    }
+
+    /*
 	var ret = '' ;
 	try {
 		ret = crypto.createHash('md5').update(fs.readFileSync(filePath, "binary")).digest('hex');
@@ -27,8 +41,10 @@ function getMd5FromFile(filePath)
 		sheldonLog.error("getMd5FromFile() catch execption : ", e) ;
 		return '' ;
 	}
-	return ret ;
+	return ret ;*/
 }
+
+//exports.getMd5FromFile = getMd5FromFile
 
 function checkUploadMd5(md5Info, datafile)
 {

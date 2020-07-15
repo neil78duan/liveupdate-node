@@ -18,6 +18,8 @@ var __dataList = "/datalist.txt";
 
 var config_info = sheldon.config_info;
 
+var upload = require('./upload');
+
 
 function writeBuffer2client(res,buf, fileExt,md5text,filename)
 {
@@ -106,7 +108,9 @@ exports.getDataFileMd5 = function (response, request) {
 
         var filePath = config_info.liveUpdateDir + '/' + dataID + '/' + name;
 
-        var Md5Text = fs.readFileSync(filePath + '.md5.txt', "ascii");
+        var Md5Text = upload.getMd5FromFile(filePath);
+
+        //var Md5Text = fs.readFileSync(filePath + '.md5.txt', "ascii");
 
         if (typeof Md5Text == 'undefined') {
             sheldon.ResponeError(response, 404, "Not found");

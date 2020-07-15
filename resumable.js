@@ -163,7 +163,8 @@ exports.sendBuffByFragment = function(writer, buf,fragmentSize, end_callback)
 }
 */
 
-exports.resumableDownload = Download ;
+exports.resumableDownload = Download;
+
 
 var fileTypeList = { ".3gp"   : "video/3gpp"
           , ".a"     : "application/octet-stream"
