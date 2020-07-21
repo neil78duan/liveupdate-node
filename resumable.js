@@ -52,7 +52,7 @@ function beginDownload(filePath, md5Text, req, resp, down) {
         config.startPos = getStartPos(req.headers.range);
         if (0 == config.startPos) {
             resp.writeHead(200, {
-                "Content-Type": getFileType(filename),
+                "Content-Type": getFileType(filePath),
                 "Content-Length": config.fileSize,
                 "content-disposition": "attachment;filename=" + filename,
                 "md5": md5Text,

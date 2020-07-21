@@ -67,7 +67,7 @@ function startPage(response)
 	'<a href="/reqaddserver">AddNewServer</a>' +
 	'<br />' +
 
-    '<a href="/requestUploadNotice">UploadNotice</a>' +
+    '<a href="/requpnotice">UploadNotice</a>' +
     '<br />' +
 
     '<a href="/versioninfo">Server Version Info</a>' +
@@ -142,6 +142,8 @@ var get_handle = {}
 get_handle["/"] = startPage;
 
 get_handle["/liveupdate"] = liveupdate.requestUploadVersion;
+get_handle["/requpnotice"] = liveupdate.requestUploadNotice;
+
 get_handle["/versioninfo"] = showVersion;
 get_handle["/uploadlog"] = requestShowUploadLogs;
 

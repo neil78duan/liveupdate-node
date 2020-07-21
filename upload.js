@@ -44,7 +44,7 @@ function trim_verID(strInput) { //过滤字符中的全部空格
 }
 
 
-function saveFiles(response,verID, FileData, desc, fileMd5Text) {
+function saveFiles(response, verID, FileData, desc, fileMd5Text, specialName) {
 	
 	sheldonLog.log("enter saveFile() ") ;
 	try {
@@ -63,15 +63,31 @@ function saveFiles(response,verID, FileData, desc, fileMd5Text) {
 		verID = trim_verID(verID) ;
 		
 		var aimDir = config_info.liveUpdateDir + '/' + verID;
-        var dataPath = aimDir + "/" + FileData.name;
+        var dataPath = aimDir + "/";
+        var aimFileName = '';
+        if (specialName) {
+            dataPath += specialName;
+            aimFileName = specialName;
+        }
+        else {
+            dataPath += FileData.name;
+            aimFileName = FileData.name;
+        }
+
         
         if (!fs.existsSync(aimDir)) {
             fs.mkdirSync(aimDir);
             sheldonLog.log("create path : ", aimDir);
         }
         else if (fs.existsSync(dataPath)) {
-            sheldon.ResponeError(response, 200, '<a href="/">Home</a><br /><br />Upload data file already exist ' + verID + "/" + FileData.name);
-            return false;
+            if (specialName) {
+                fs.unlinkSync(dataPath);
+            }
+            else {
+                sheldon.ResponeError(response, 200, '<a href="/">Home</a><br /><br />Upload data file already exist ' + verID + "/" + FileData.name);
+                return true;
+            }
+            
         }
 
 		fs.renameSync(dataFile, dataPath ) ;		
@@ -81,7 +97,7 @@ function saveFiles(response,verID, FileData, desc, fileMd5Text) {
 			sheldonLog.info("upload version file success version-id = ", verID);
 			
 			var downUrl =config_info.my_domain_name +':' +
-				config_info.port.toString() + '/loaddata?dataver=' + verID +'&name=' + FileData.name;
+                config_info.port.toString() + '/loaddata?dataver=' + verID + '&name=' + aimFileName;
 			
 			var backTip = '<a href="/">Home</a><br /><br />Upload version success ! ' +
 				'<br />  url is : ' + downUrl ;
@@ -93,9 +109,10 @@ function saveFiles(response,verID, FileData, desc, fileMd5Text) {
 				'\n<br />' + verID + ' ' + desc + ' : ' + downUrl) ;
 			
 			// write file list
-			fs.appendFileSync(config_info.liveUpdateDir +  __dataList,
-                verID +  ' : ' + FileData.name + '\n') ;
-			
+            if (!specialName) {
+                fs.appendFileSync(config_info.liveUpdateDir + __dataList,
+                    verID + ' : ' + aimFileName + '\n');
+            }
             //output md5 file 
             fs.writeFileSync(dataPath + ".md5.txt", mymd5);
 			return true ;
@@ -145,7 +162,7 @@ exports.UploadVersionHandle = function (response, request) {
 
 		   else if(files &&  files.DataFile && files.DataFile.size > 0) {
 		   
-               bsuccess = saveFiles(response, formData.VerID, files.DataFile,  formData.VerDesc, formData.md5Val);
+               bsuccess = saveFiles(response, formData.VerID, files.DataFile, formData.VerDesc, formData.md5Val, formData.specialName);
 		   }
 		   if( bsuccess == false) {
 		   		sheldon.ResponeError(response, 400, "parse data error");
@@ -248,6 +265,8 @@ exports.requestUploadNotice = function (response) {
         '<br />' +
 
         '<input type="hidden" name="VerID" value="public" />' +
+        '<input type="hidden" name="specialName" value="notice.txt" />' +
+        
         '<input type="submit" value="Submit" />' +
         '</form>' +
         '</body>' +
