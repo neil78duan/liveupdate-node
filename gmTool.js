@@ -66,8 +66,10 @@ function startPage(response)
 
 	'<a href="/reqaddserver">AddNewServer</a>' +
 	'<br />' +
-	
-	
+
+    '<a href="/requestUploadNotice">UploadNotice</a>' +
+    '<br />' +
+
     '<a href="/versioninfo">Server Version Info</a>' +
     '<br />' +
 

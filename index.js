@@ -134,6 +134,7 @@ sheldonGet_handle["/datamd5"] = downFile.getDataFileMd5;
 
 sheldonGet_handle["/getlist"] = downFile.DownLoadList
 sheldonGet_handle["/getserverlist"] = serverList.getServerList;
+sheldonGet_handle["/getnotice"] = serverList.getGameNotice;
 
 
 //start game server

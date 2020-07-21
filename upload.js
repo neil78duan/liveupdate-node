@@ -284,3 +284,38 @@ exports.requestUploadVersion = function (response)
 	response.write(body);
 	response.end();
 }
+
+
+exports.requestUploadNotice = function (response) {
+
+    //console.log("Request handler 'start' was called.");
+
+    var body = '<html>' +
+        '<head>' +
+        '<meta http-equiv="Content-Type" ' +
+        'content="text/html; charset=UTF-8" />' +
+        '</head>' +
+        '<body>' +
+
+        '<a href="/">Home</a><br />' +
+
+        '<br />' +
+        '<br />' +
+
+        '<form action="/uploadversion" method="post" enctype="multipart/form-data"> ' +
+
+
+        'Notice File :' +
+        '<input type="file" name="DataFile" multiple="multiple">' +
+        '<br />' +
+
+        '<input type="hidden" name="VerID" value="public" />' +
+        '<input type="submit" value="Submit" />' +
+        '</form>' +
+        '</body>' +
+        '</html>';
+
+    response.writeHead(200, { "Content-Type": "text/html" });
+    response.write(body);
+    response.end();
+}

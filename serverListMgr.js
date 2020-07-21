@@ -16,11 +16,16 @@ var config_info = sheldon.config_info;
 
 var _srvlist_file = config_info.liveUpdateDir + "/serverlist.json";
 
+var _notice_file = config_info.liveUpdateDir + "/notice.txt";
 
 exports.getServerList = function (response, request) {
 
     return downloader.downTextFile(_srvlist_file, response);
 
+}
+
+exports.getGameNotice = function (response, request) {
+    return downloader.downTextFile(_notice_file, response);
 }
 
 exports.handleAddNewServer = function (response, request, dataJson) {
