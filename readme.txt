@@ -36,6 +36,9 @@ http://hostname/getlist
 获得服务器列表
 http://hostname/getserverlist
 
+获得公告
+http://hostname/loaddata?dataver=public&name=notice.txt
+
 所有地址使用get 方法
 
 duan
