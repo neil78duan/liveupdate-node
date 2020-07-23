@@ -337,8 +337,11 @@ var fileTypeList = { ".3gp"   : "video/3gpp"
 
 function getFileType( fileName )
 {
-	var extName = path.extname(fileName).toLowerCase();
-    return fileTypeList[extName] || "application/octet-stream";
+    var extName = path.extname(fileName).toLowerCase();
+    if (fileTypeList[extName]) {
+        return fileTypeList[extName];
+    }
+    return  "application/octet-stream";
 }
 
 exports.getFileType = getFileType;

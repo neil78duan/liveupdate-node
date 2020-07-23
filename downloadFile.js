@@ -68,15 +68,19 @@ function downTextFile(filePath, response)
 
 exports.DownLoadData = function (response , request)
 {
-        sheldonLog.debug("getVersionData() begin") ;
-	try
-	{
-		var dataJson = url.parse(request.url, true).query;
-        sheldonLog.debug("getVersionData() ", JSON.stringify(dataJson) ) ;
-		
-        var dataID = dataJson.dataver ;
-		var name = dataJson.name ;
-		
+    sheldonLog.debug("getVersionData() begin");
+    try {
+        var dataJson = url.parse(request.url, true).query;
+        sheldonLog.debug("getVersionData() ", JSON.stringify(dataJson));
+
+        var dataID = dataJson.dataver;
+        var name = dataJson.name;
+
+        if (verIdIsOk != -1) {
+            sheldon.ResponeError(response, 200, "Bad request!");
+            return 200;
+        }
+
         var filePath = config_info.liveUpdateDir + '/' + dataID + '/' + name;
 
         var Md5Text = fs.readFileSync(filePath + '.md5.txt', "ascii");
@@ -84,16 +88,16 @@ exports.DownLoadData = function (response , request)
         if (typeof Md5Text == 'undefined') {
             Md5Text = ' ';
         }
-		resumable.resumableDownload(filePath,response , request,Md5Text) ;
-		
+        resumable.resumableDownload(filePath, response, request, Md5Text);
+
     }
-	
+
     catch (e) {
-        sheldonLog.log("getVersionData() catch exception ", e) ;
-        sheldon.ResponeError(response,404, "Not found");
+        sheldonLog.log("getVersionData() catch exception ", e);
+        sheldon.ResponeError(response, 404, "Not found");
     }
-	
-    return 200 ;
+
+    return 200;
 	
 }
 
@@ -105,6 +109,13 @@ exports.getDataFileMd5 = function (response, request) {
 
         var dataID = dataJson.dataver;
         var name = dataJson.name;
+
+        var verIdIsOk = dataID.indexOf('/');
+
+        if (verIdIsOk != -1) {
+            sheldon.ResponeError(response, 200, "Bad request!");
+            return 200;
+        }
 
         var filePath = config_info.liveUpdateDir + '/' + dataID + '/' + name;
         var md5File = filePath + '.md5.txt';

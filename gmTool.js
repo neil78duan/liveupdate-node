@@ -43,8 +43,19 @@ function checkIP( request, pathName)
 
 }
 
+function getUploadURLs() {
+    var upUrls = '';
+
+    config_info.UploadList.forEach(function (v) {
+        upUrls += '<a href="/requppublicfile?name=' + v.RequestPath + '">' + v.display +'</a>' + '<br />'
+    });
+
+    return upUrls;
+}
 function startPage(response)
 {
+    
+
     var body = '<html>'+
     '<head>'+
     '<meta http-equiv="Content-Type" '+
@@ -62,13 +73,12 @@ function startPage(response)
     '<a href="/reqviewserverlist">View Server List</a>' +
     '<br />' +
 
-        
-
 	'<a href="/reqaddserver">AddNewServer</a>' +
 	'<br />' +
 
-    '<a href="/requpnotice">UploadNotice</a>' +
-    '<br />' +
+        getUploadURLs() +
+    //'<a href="/requpnotice">UploadNotice</a>' +
+    //'<br />' +
 
     '<a href="/versioninfo">Server Version Info</a>' +
     '<br />' +
@@ -142,7 +152,7 @@ var get_handle = {}
 get_handle["/"] = startPage;
 
 get_handle["/liveupdate"] = liveupdate.requestUploadVersion;
-get_handle["/requpnotice"] = liveupdate.requestUploadNotice;
+get_handle["/requppublicfile"] = liveupdate.requestUploadFile;
 
 get_handle["/versioninfo"] = showVersion;
 get_handle["/uploadlog"] = requestShowUploadLogs;

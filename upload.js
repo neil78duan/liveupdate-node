@@ -12,7 +12,10 @@ var fs=require("fs");
 var crypto = require('crypto') ;
 var sheldon = require("./index");
 var config_info = sheldon.config_info;
-var sheldonLog = require('./sheldonLog') ;
+var sheldonLog = require('./sheldonLog');
+
+var url = require("url");
+
 var __uploadLog = "/upload.log";
 var __dataList = "/datalist.txt";
 
@@ -241,38 +244,63 @@ exports.requestUploadVersion = function (response)
 }
 
 
-exports.requestUploadNotice = function (response) {
+exports.requestUploadFile = function (response, request) {
 
-    //console.log("Request handler 'start' was called.");
+    try {
+        var dataJson = url.parse(request.url, true).query;
+        sheldonLog.debug("requestUploadNotice() ", JSON.stringify(dataJson));
 
-    var body = '<html>' +
-        '<head>' +
-        '<meta http-equiv="Content-Type" ' +
-        'content="text/html; charset=UTF-8" />' +
-        '</head>' +
-        '<body>' +
+        var pathname = dataJson.name.toLowerCase();
 
-        '<a href="/">Home</a><br />' +
+        var reqAim ;
 
-        '<br />' +
-        '<br />' +
+        config_info.UploadList.forEach(function (v, index) {
+            if (v.RequestPath == pathname) {
+                reqAim = v;
+            }
+        });
 
-        '<form action="/uploadversion" method="post" enctype="multipart/form-data"> ' +
+        if (reqAim) {
+            sheldonLog.log("requestUploadNotice() can not found ", pathname);
+            return 404;
+        }
+
+        var body = '<html>' +
+            '<head>' +
+            '<meta http-equiv="Content-Type" ' +
+            'content="text/html; charset=UTF-8" />' +
+            '</head>' +
+            '<body>' +
+
+            '<a href="/">Home</a><br />' +
+
+            '<br />' +
+            '<br />' +
+
+            '<form action="/uploadversion" method="post" enctype="multipart/form-data"> ' +
 
 
-        'Notice File :' +
-        '<input type="file" name="DataFile" multiple="multiple">' +
-        '<br />' +
+            'Notice File :' +
+            '<input type="file" name="DataFile" multiple="multiple">' +
+            '<br />' +
 
-        '<input type="hidden" name="VerID" value="public" />' +
-        '<input type="hidden" name="specialName" value="notice.txt" />' +
-        
-        '<input type="submit" value="Submit" />' +
-        '</form>' +
-        '</body>' +
-        '</html>';
+            '<input type="hidden" name="VerID" value="' + reqAim.display + '" />' +
+            '<input type="hidden" name="specialName" value="' + reqAim.file + '" />' +
 
-    response.writeHead(200, { "Content-Type": "text/html" });
-    response.write(body);
-    response.end();
+            '<input type="submit" value="Submit" />' +
+            '</form>' +
+            '</body>' +
+            '</html>';
+
+        response.writeHead(200, { "Content-Type": "text/html" });
+        response.write(body);
+        response.end();
+    }
+
+    catch (e) {
+        sheldonLog.log("getVersionData() catch exception ", e);
+        sheldon.ResponeError(response, 404, "Not found");
+    }
+
+    return 200;
 }

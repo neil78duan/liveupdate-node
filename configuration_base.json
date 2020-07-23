@@ -1,6 +1,21 @@
 {
   "port": 1080,
   "liveUpdateDir": "../upload",
+  "PublicUpload": "public",
+  "UploadList": [
+    {
+      "RequestPath": "serverlist",
+      "display": "Upload ServerList",
+      "file": "serverlist.json"
+    },
+    {
+      "RequestPath": "notice",
+      "display": "Upload Notice file",
+      "file": "notice.txt"
+    }
+  ],
+
+  "ServerList": "public/serverlist.json",
 
   "openGMTool": "yes",
   "gmtoolport": 8080,
@@ -19,8 +34,18 @@
     "logtype": "all",
     "loglevel": "debug",
     "log4_config": {
-		"appenders": { "cheese": { "type": "file", "filename": "../log/liveupdate.log" } },
-		"categories": { "default": { "appenders": ["cheese"], "level": "error" } }
+      "appenders": {
+        "cheese": {
+          "type": "file",
+          "filename": "../log/liveupdate.log"
+        }
+      },
+      "categories": {
+        "default": {
+          "appenders": [ "cheese" ],
+          "level": "error"
+        }
+      }
     }
 
   }
