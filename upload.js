@@ -16,8 +16,8 @@ var sheldonLog = require('./sheldonLog');
 
 var url = require("url");
 
-var __uploadLog = "/upload.log";
-var __dataList = "/datalist.txt";
+var __uploadLog = config_info.liveUpdateDir + "/upload.log";
+var __dataList = config_info.liveUpdateDir + "/datalist.txt";
 
 
 function getMd5FromFile(filePath)
@@ -108,13 +108,11 @@ function saveFiles(response, verID, FileData, desc, fileMd5Text, specialName) {
 			sheldon.ResponeError(response,200,  backTip) ;
 			
 			//write log
-			fs.appendFileSync(config_info.liveUpdateDir  + __uploadLog,
-				'\n<br />' + verID + ' ' + desc + ' : ' + downUrl) ;
+			fs.appendFileSync(__uploadLog,	'\n<br />' + verID + ' ' + desc + ' : ' + downUrl) ;
 			
 			// write file list
             if (!specialName) {
-                fs.appendFileSync(config_info.liveUpdateDir + __dataList,
-                    verID + ' : ' + aimFileName + '\n');
+                fs.appendFileSync(__dataList, verID + ' : ' + aimFileName + '\n');
             }
             //output md5 file 
             fs.writeFileSync(dataPath + ".md5.txt", mymd5);
@@ -260,9 +258,10 @@ exports.requestUploadFile = function (response, request) {
             }
         });
 
-        if (reqAim) {
+        if (!reqAim) {
             sheldonLog.log("requestUploadNotice() can not found ", pathname);
-            return 404;
+            sheldon.ResponeError(response, 404, "Not found");
+            return 200;
         }
 
         var body = '<html>' +
@@ -280,11 +279,11 @@ exports.requestUploadFile = function (response, request) {
             '<form action="/uploadversion" method="post" enctype="multipart/form-data"> ' +
 
 
-            'Notice File :' +
+            reqAim.RequestPath + 'File :' +
             '<input type="file" name="DataFile" multiple="multiple">' +
             '<br />' +
 
-            '<input type="hidden" name="VerID" value="' + reqAim.display + '" />' +
+            '<input type="hidden" name="VerID" value="' + config_info.PublicUpload + '" />' +
             '<input type="hidden" name="specialName" value="' + reqAim.file + '" />' +
 
             '<input type="submit" value="Submit" />' +

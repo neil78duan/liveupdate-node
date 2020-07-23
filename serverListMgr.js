@@ -10,16 +10,15 @@ var fs = require("fs");
 var url = require("url");
 var sheldon = require("./index");
 var sheldonLog = require('./sheldonLog');
-var downloader = require('./downloadFile');
+//var downloader = require('./downloadFile');
 
 var config_info = sheldon.config_info;
 
-var _srvlist_file = config_info.liveUpdateDir + "/serverlist.json";
+var _srvlist_file = config_info.liveUpdateDir + '/' + config_info.ServerList;
 
-exports.getServerList = function (response, request) {
-
-    return downloader.downTextFile(_srvlist_file, response);
-}
+//exports.getServerList = function (response, request) {
+//    return downloader.downTextFile(_srvlist_file, response);
+//}
 
 exports.handleAddNewServer = function (response, request, dataJson) {
     try {

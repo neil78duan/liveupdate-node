@@ -131,9 +131,11 @@ var serverList = require('./serverListMgr');
 
 sheldonGet_handle["/loaddata"] = downFile.DownLoadData;
 sheldonGet_handle["/datamd5"] = downFile.getDataFileMd5;
+sheldonGet_handle["/gettextfile"] = downFile.getTextFile;
 
-sheldonGet_handle["/getlist"] = downFile.DownLoadList
-sheldonGet_handle["/getserverlist"] = serverList.getServerList;
+
+//sheldonGet_handle["/getlist"] = downFile.DownLoadList
+//sheldonGet_handle["/getserverlist"] = serverList.getServerList;
 
 
 //start game server

@@ -25,19 +25,28 @@ Server Version Info		-> 查看服务器信息
 
 程序开发中使用的功能
 
-http://hostname/loaddata -> 下载版本数据
+http://hostname/loaddata -> 下载数据
+http://hostname/datamd5	-> 获得数据文件MD5
+
+http://hostname/gettextfile -> 下载文本文件
+
+
 用法：
 http://localhost/loaddata?dataver=1.1.1&name=data.zip
 版本1.1.1 上传的文件名是data.zip
 
 获取每个版本对应的文件名列表 （下载txt文件）
-http://hostname/getlist
+http://hostname/gettextfile?name=datalist.txt
+
+获得上传日志
+http://hostname/gettextfile?name=upload.log
 
 获得服务器列表
+http://hostname/gettextfile?name=serverlist.json
 http://hostname/getserverlist
 
 获得公告
-http://hostname/loaddata?dataver=public&name=notice.txt
+http://hostname/gettextfile?dataver=public&name=notice.txt
 
 所有地址使用get 方法
 

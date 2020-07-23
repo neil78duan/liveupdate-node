@@ -14,8 +14,6 @@ var sheldonLog = require('./sheldonLog') ;
 var resumable = require('./resumable');
 var path = require('path');
 
-var __dataList = "/datalist.txt";
-
 var config_info = sheldon.config_info;
 
 var upload = require('./upload');
@@ -53,7 +51,7 @@ function downTextFile(filePath, response)
 
                 var filename = path.basename(filePath);
 
-                writeBuffer2client(response, file, resumable.getFileType(filePath),null, filename) ;
+                writeBuffer2client(response, file, "text/plain",null, filename) ;
 			}
 		});
 	}
@@ -76,6 +74,7 @@ exports.DownLoadData = function (response , request)
         var dataID = dataJson.dataver;
         var name = dataJson.name;
 
+        var verIdIsOk = dataID.indexOf('/');
         if (verIdIsOk != -1) {
             sheldon.ResponeError(response, 200, "Bad request!");
             return 200;
@@ -110,13 +109,6 @@ exports.getDataFileMd5 = function (response, request) {
         var dataID = dataJson.dataver;
         var name = dataJson.name;
 
-        var verIdIsOk = dataID.indexOf('/');
-
-        if (verIdIsOk != -1) {
-            sheldon.ResponeError(response, 200, "Bad request!");
-            return 200;
-        }
-
         var filePath = config_info.liveUpdateDir + '/' + dataID + '/' + name;
         var md5File = filePath + '.md5.txt';
 
@@ -146,14 +138,49 @@ exports.getDataFileMd5 = function (response, request) {
 
 }
 
+/*
 exports.DownLoadList = function (response , request)
 {
-	sheldonLog.debug("call DownLoadList() "  ) ;
-	
+	sheldonLog.debug("call DownLoadList() "  ) ;	
     return downTextFile(config_info.liveUpdateDir +  __dataList, response);
 	
-	
 }
+*/
+
+exports.getTextFile = function (response, request) {
+    sheldonLog.debug("getTextFile() begin");
+    try {
+        var dataJson = url.parse(request.url, true).query;
+        sheldonLog.debug("getVersionData() ", JSON.stringify(dataJson));
+
+        var dataID = dataJson.dataver;
+        var name = dataJson.name;
+
+        var filePath = config_info.liveUpdateDir;
+
+        if (dataID) {
+            var verIdIsOk = dataID.indexOf('/');
+            if (verIdIsOk != -1) {
+                sheldon.ResponeError(response, 200, "Bad request!");
+                return 200;
+            }
+            filePath += '/' + dataID;
+        }
+        
+        filePath += '/' + name;
+
+        return downTextFile(filePath, response);
+    }
+
+    catch (e) {
+        sheldonLog.log("getVersionData() catch exception ", e);
+        sheldon.ResponeError(response, 404, "Not found");
+    }
+
+    return 200;
+
+}
+
 
 exports.downTextFile = downTextFile;
 

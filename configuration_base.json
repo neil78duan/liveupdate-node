@@ -4,18 +4,13 @@
   "PublicUpload": "public",
   "UploadList": [
     {
-      "RequestPath": "serverlist",
-      "display": "Upload ServerList",
-      "file": "serverlist.json"
-    },
-    {
       "RequestPath": "notice",
       "display": "Upload Notice file",
       "file": "notice.txt"
     }
   ],
 
-  "ServerList": "public/serverlist.json",
+  "ServerList": "serverlist.json",
 
   "openGMTool": "yes",
   "gmtoolport": 8080,
