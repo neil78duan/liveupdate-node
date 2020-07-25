@@ -43,7 +43,6 @@ http://hostname/gettextfile?name=upload.log
 
 获得服务器列表
 http://hostname/gettextfile?name=serverlist.json
-http://hostname/getserverlist
 
 获得公告
 http://hostname/gettextfile?dataver=public&name=notice.txt
